@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Istana Qadriyyah Pontianak</title>
+    <style>
+        /* Matikan scrollbar pada window luar iframe */
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            /* Mencegah scrollbar ganda dari body */
+            background-color: transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Kartu utama yang memegang scrollbar tunggal */
+        .gallery-container {
+            max-width: 400px;
+            height: 100vh;
+            /* Mengisi penuh tinggi iframe Lapentor */
+            box-sizing: border-box;
+            margin: 0 auto;
+            text-align: center;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            /* Memunculkan HANYA SATU scrollbar internal jika teks panjang */
+        }
+
+        .slide-title {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .image-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            max-width: 356px;
+            border-radius: 8px;
+            object-fit: cover;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .btn-nav {
+            position: absolute;
+            background-color: rgba(211, 84, 0, 0.85);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+            z-index: 10;
+        }
+
+        .btn-nav:hover {
+            background-color: rgba(160, 64, 0, 1);
+        }
+
+        .prev {
+            left: 5px;
+        }
+
+        .next {
+            right: 5px;
+        }
+
+        .slide-desc {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.5;
+            text-align: justify;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="gallery-container">
+        <!-- Judul akan berubah otomatis -->
+        <div class="slide-title" id="judul-hewan">Memuat...</div>
+
+        <div class="image-wrapper">
+            <!-- Tombol Before / Prev -->
+            <button class="btn-nav prev" id="btn-prev" onclick="gantiSlide(-1)">&#10094;</button>
+
+            <!-- Gambar utama -->
+            <img id="gambar-hewan" src="" alt="Koleksi Museum">
+
+            <!-- Tombol Next -->
+            <button class="btn-nav next" id="btn-next" onclick="gantiSlide(1)">&#10095;</button>
+        </div>
+
+        <!-- Keterangan akan berubah otomatis -->
+        <div class="slide-desc" id="keterangan-hewan">Memuat keterangan...</div>
+    </div>
+
+    <script>
+        // 1. Tempat lu masukin Judul, Link Gambar, dan Keterangan
+        // Cukup edit teks di dalam tanda kutip ini aja ya
+        const koleksiData = [
+            {
+                judul: "Istana Qadriyyah Pontianak",
+                gambar: "depan.jpg",
+                keterangan: "Istana Qadriyah terletak di Kampung Dalam Bugis, Kota Pontianak, tepatnya di daerah persimpangan Sungai Landak, Sungai Kapuas Kecil dan Sungai Kapuas. Istana ini pertama kali dibangun pada tahun 1771 M oleh Sultan Syarief Abdurrachman Alkadri, Sultan Pertama Pontianak. Istana ini telah mengalami beberapa kali perubahan sejak pertama kali didirikan. Bangunan yang ada sekarang adalah peninggalan Sultan Syarief Muhammad Alkadri yang dibangun sekitar tahun 1923 M. Konstruksi bangunan keraton menggunakan struktur rangka kayu belian dengan arsitektur tradisional Indonesia, yakni beratap tumpang tiga dipadukan dengan arsitektur Eropa, Arab, dan Cina. Bagian atap atas berbentuk genta bermahkota dan bagian depan atas dibuat balkon atau anjungan. Istana (Keraton) ini terdiri dari 5 ruangan pokok, yaitu: Anjungan, Balairung, Kantor dan Ruang kerja Sultan, Ruang Singgasana, dan Kamar Tidur Sultan dan keluarga. Ukuran Istana : Panjang = 2,80 m. Lebar = 1,25 m. Tinggi = 1,33 m. Luas = 2,92 m2."
+            },
+            {
+                judul: "Istana Qadriyyah Pontianak",
+                gambar: "kiri.jpg",
+                keterangan: "Istana Qadriyah terletak di Kampung Dalam Bugis, Kota Pontianak, tepatnya di daerah persimpangan Sungai Landak, Sungai Kapuas Kecil dan Sungai Kapuas. Istana ini pertama kali dibangun pada tahun 1771 M oleh Sultan Syarief Abdurrachman Alkadri, Sultan Pertama Pontianak. Istana ini telah mengalami beberapa kali perubahan sejak pertama kali didirikan. Bangunan yang ada sekarang adalah peninggalan Sultan Syarief Muhammad Alkadri yang dibangun sekitar tahun 1923 M. Konstruksi bangunan keraton menggunakan struktur rangka kayu belian dengan arsitektur tradisional Indonesia, yakni beratap tumpang tiga dipadukan dengan arsitektur Eropa, Arab, dan Cina. Bagian atap atas berbentuk genta bermahkota dan bagian depan atas dibuat balkon atau anjungan. Istana (Keraton) ini terdiri dari 5 ruangan pokok, yaitu: Anjungan, Balairung, Kantor dan Ruang kerja Sultan, Ruang Singgasana, dan Kamar Tidur Sultan dan keluarga. Ukuran Istana : Panjang = 2,80 m. Lebar = 1,25 m. Tinggi = 1,33 m. Luas = 2,92 m2."
+            },
+            {
+                judul: "Istana Qadriyyah Pontianak",
+                gambar: "belakang.jpg",
+                keterangan: "Istana Qadriyah terletak di Kampung Dalam Bugis, Kota Pontianak, tepatnya di daerah persimpangan Sungai Landak, Sungai Kapuas Kecil dan Sungai Kapuas. Istana ini pertama kali dibangun pada tahun 1771 M oleh Sultan Syarief Abdurrachman Alkadri, Sultan Pertama Pontianak. Istana ini telah mengalami beberapa kali perubahan sejak pertama kali didirikan. Bangunan yang ada sekarang adalah peninggalan Sultan Syarief Muhammad Alkadri yang dibangun sekitar tahun 1923 M. Konstruksi bangunan keraton menggunakan struktur rangka kayu belian dengan arsitektur tradisional Indonesia, yakni beratap tumpang tiga dipadukan dengan arsitektur Eropa, Arab, dan Cina. Bagian atap atas berbentuk genta bermahkota dan bagian depan atas dibuat balkon atau anjungan. Istana (Keraton) ini terdiri dari 5 ruangan pokok, yaitu: Anjungan, Balairung, Kantor dan Ruang kerja Sultan, Ruang Singgasana, dan Kamar Tidur Sultan dan keluarga. Ukuran Istana : Panjang = 2,80 m. Lebar = 1,25 m. Tinggi = 1,33 m. Luas = 2,92 m2."
+            },
+            {
+                judul: "Istana Qadriyyah Pontianak",
+                gambar: "kanan.jpg",
+                keterangan: "Istana Qadriyah terletak di Kampung Dalam Bugis, Kota Pontianak, tepatnya di daerah persimpangan Sungai Landak, Sungai Kapuas Kecil dan Sungai Kapuas. Istana ini pertama kali dibangun pada tahun 1771 M oleh Sultan Syarief Abdurrachman Alkadri, Sultan Pertama Pontianak. Istana ini telah mengalami beberapa kali perubahan sejak pertama kali didirikan. Bangunan yang ada sekarang adalah peninggalan Sultan Syarief Muhammad Alkadri yang dibangun sekitar tahun 1923 M. Konstruksi bangunan keraton menggunakan struktur rangka kayu belian dengan arsitektur tradisional Indonesia, yakni beratap tumpang tiga dipadukan dengan arsitektur Eropa, Arab, dan Cina. Bagian atap atas berbentuk genta bermahkota dan bagian depan atas dibuat balkon atau anjungan. Istana (Keraton) ini terdiri dari 5 ruangan pokok, yaitu: Anjungan, Balairung, Kantor dan Ruang kerja Sultan, Ruang Singgasana, dan Kamar Tidur Sultan dan keluarga. Ukuran Istana : Panjang = 2,80 m. Lebar = 1,25 m. Tinggi = 1,33 m. Luas = 2,92 m2."
+            }
+        ];
+
+        let indexSekarang = 0;
+
+        // Ambil elemen HTML yang akan dimanipulasi
+        const elemenJudul = document.getElementById('judul-hewan');
+        const elemenGambar = document.getElementById('gambar-hewan');
+        const elemenKeterangan = document.getElementById('keterangan-hewan');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        function updateTampilan() {
+            // Ganti konten sesuai data array
+            elemenJudul.innerText = koleksiData[indexSekarang].judul;
+            elemenGambar.src = koleksiData[indexSekarang].gambar;
+            elemenKeterangan.innerText = koleksiData[indexSekarang].keterangan;
+
+            // Logika sesuai revisi dosen:
+            // Sembunyikan tombol Prev jika sedang di gambar urutan pertama (index 0)
+            if (indexSekarang === 0) {
+                btnPrev.style.display = 'none';
+            } else {
+                btnPrev.style.display = 'flex';
+            }
+
+            // Sembunyikan tombol Next jika sedang di gambar urutan terakhir
+            if (indexSekarang === koleksiData.length - 1) {
+                btnNext.style.display = 'none';
+            } else {
+                btnNext.style.display = 'flex';
+            }
+        }
+
+        function gantiSlide(arah) {
+            indexSekarang += arah;
+            updateTampilan();
+        }
+
+        // Jalankan fungsi saat web pertama kali dirender
+        updateTampilan();
+    </script>
+
+</body>
+</html>
